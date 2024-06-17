@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
 
             if (m_timer <= 0)
             {
-                Debug.Log("GAME END");
+                EndGame(false);
                 m_gameActive = false;
             }
         }
@@ -37,10 +37,24 @@ public class GameManager : MonoBehaviour
     public void AddScore()
     {
         m_score++;
+
+        if (m_score >= 5) { EndGame(true); }
     }
 
     public void StartGame()
     {
         m_gameActive = true;
+    }
+
+    public void EndGame(bool win)
+    {
+        if (win)
+        {
+            Debug.Log("GAME WIN!");
+        }
+        else
+        {
+            Debug.Log("GAME LOSE...");
+        }
     }
 }
