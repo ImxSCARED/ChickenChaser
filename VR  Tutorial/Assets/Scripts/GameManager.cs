@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,10 +52,13 @@ public class GameManager : MonoBehaviour
         if (win)
         {
             Debug.Log("GAME WIN!");
+            SceneManager.LoadScene("Menu");
+            
         }
         else
         {
             Debug.Log("GAME LOSE...");
+            SceneManager.LoadScene("Menu");
         }
     }
 }
