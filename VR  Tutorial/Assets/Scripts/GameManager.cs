@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private float m_timer;
     [SerializeField]
     private float m_score;
+    [SerializeField]
+    private AudioSource PointGain;
 
     private bool m_gameActive;
 
@@ -22,12 +24,13 @@ public class GameManager : MonoBehaviour
     {
         if (m_gameActive)
         {
-            m_timer -= Time.deltaTime;
+            
+            m_timer += Time.deltaTime;
 
             int timerCeiling = Mathf.CeilToInt(m_timer);
             m_timerBoard.text = (timerCeiling / 60).ToString("D2") + ":" + (timerCeiling % 60).ToString("D2");
 
-            if (m_timer <= 0)
+            if (m_timer >= 299f)
             {
                 EndGame(false);
                 m_gameActive = false;
@@ -37,8 +40,9 @@ public class GameManager : MonoBehaviour
 
     public void AddScore()
     {
-        m_score++;
 
+        m_score++;
+        PointGain.Play();
         if (m_score >= 5) { EndGame(true); }
     }
 
