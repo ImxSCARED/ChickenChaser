@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -10,8 +11,8 @@ public class ChickenSpawner : MonoBehaviour
     private GameObject m_chickenPrefab;
 
     [SerializeField]
-    private GameObject m_spawnPointParent;
-    private List<Transform> m_spawnPoints;
+    private List<Transform> m_spawnCollections;
+    private Dictionary<int, List<Transform>> m_spawnPointDict;
 
     [SerializeField]
     private int m_chickensToSpawn;
@@ -19,29 +20,48 @@ public class ChickenSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Get m_spawnPointParent's children
-        Transform[] spawnPointArray = m_spawnPointParent.GetComponentsInChildren<Transform>();
+        m_spawnPointDict = new Dictionary<int, List<Transform>>();
 
-        m_spawnPoints = new List<Transform>();
-
-        // For some reason, GetComponentsInChildren also returns the parent, at index 1, so we skip that
-        for (int i = 1; i < spawnPointArray.Length; i++)
+        // Fill out our spawn point dictionary
+        foreach (Transform collection in m_spawnCollections)
         {
-            m_spawnPoints.Add(spawnPointArray[i]);
+            Transform[] spawnPointArray = collection.GetComponentsInChildren<Transform>();
+
+            List<Transform> spawnPoints = new List<Transform>();
+
+            // For some reason, GetComponentsInChildren also returns the parent, at index 1, so we skip that
+            for (int i = 1; i < spawnPointArray.Length; i++)
+            {
+                spawnPoints.Add(spawnPointArray[i]);
+            }
+
+            m_spawnPointDict.Add(collection.GetInstanceID(), spawnPoints);
         }
 
-        Debug.Assert(m_chickensToSpawn <= m_spawnPoints.Count);
 
+        List<Transform> spawnCols = m_spawnCollections;
+
+        // We run through each chicken to spawn, choosing a unique room for each
         for (int i = 0; i < m_chickensToSpawn; i++)
         {
-            int spawnPointIndex = Random.Range(0, m_spawnPoints.Count);
+            // If we run out of rooms before we run out of chickens, we just reset the rooms and keep going
+            if (spawnCols.Count == 0)
+            {
+                spawnCols = m_spawnCollections;
+            }
+
+            int collectionIndex = Random.Range(0, spawnCols.Count);
+            int collectionID = spawnCols[collectionIndex].GetInstanceID();
+            spawnCols.RemoveAt(collectionIndex);
+
+            int spawnPointIndex = Random.Range(0, m_spawnPointDict[collectionID].Count);
 
             GameObject chickenInstance = Instantiate(m_chickenPrefab);
 
-            chickenInstance.transform.position = m_spawnPoints[spawnPointIndex].transform.position;
-            chickenInstance.transform.rotation = m_spawnPoints[spawnPointIndex].transform.rotation;
+            chickenInstance.transform.position = m_spawnPointDict[collectionID][spawnPointIndex].transform.position;
+            chickenInstance.transform.rotation = m_spawnPointDict[collectionID][spawnPointIndex].transform.rotation;
 
-            m_spawnPoints.RemoveAt(spawnPointIndex);
+            m_spawnPointDict[collectionID].RemoveAt(spawnPointIndex);
         }
     }
 }
