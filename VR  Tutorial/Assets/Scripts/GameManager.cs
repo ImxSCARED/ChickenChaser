@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         if (win)
         {
             Debug.Log("GAME WIN!");
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("ScoreScene");
             
         }
         else
