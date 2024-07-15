@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
     public void AddScore()
     {
         m_score++;
@@ -69,10 +70,15 @@ public class GameManager : MonoBehaviour
         if (m_score >= 5) { EndGame(true); }
     }
 
+    
+
     public void StartGame()
     {
         m_gameState = GameState.GameActive;
     }
+
+    
+
 
     public void EndGame(bool win)
     {
