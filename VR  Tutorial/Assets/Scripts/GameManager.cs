@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
 {
     private GameObject m_scoreSceneHelper;
 
+	[SerializeField]
+	GameObject[] m_cagedChickens;
+
     [SerializeField]
     private TMP_Text m_timerBoard;
     private TMP_Text? m_finalTimeBoard = null;
@@ -26,7 +29,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float m_timer;
     [SerializeField]
-    private float m_score;
+    private int m_score;
     [SerializeField]
     private AudioSource m_pointGain;
 
@@ -62,23 +65,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
     public void AddScore()
     {
+		m_cagedChickens[m_score].SetActive(true);
+
         m_score++;
         m_pointGain.Play();
         if (m_score >= 5) { EndGame(true); }
     }
 
-    
-
     public void StartGame()
     {
         m_gameState = GameState.GameActive;
     }
-
-    
-
 
     public void EndGame(bool win)
     {
