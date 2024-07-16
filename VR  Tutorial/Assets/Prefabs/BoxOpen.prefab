@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 232566678493172400}
   - component: {fileID: 4027555478134490461}
   - component: {fileID: 568474053406272640}
-  - component: {fileID: 1238281441638223251}
   - component: {fileID: 8860281720444763392}
   m_Layer: 0
   m_Name: BoxOpen
@@ -255,18 +254,6 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
---- !u!114 &1238281441638223251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 232566678493172429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 328bb031c78e9f64b8985f4fc4954375, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &8860281720444763392
 BoxCollider:
   m_ObjectHideFlags: 0
