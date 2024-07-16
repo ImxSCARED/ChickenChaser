@@ -39,7 +39,7 @@ public class ChickenSpawner : MonoBehaviour
         }
 
 
-        List<Transform> spawnCols = m_spawnCollections;
+        List<Transform> spawnCols = new List<Transform>(m_spawnCollections);
 
         // We run through each chicken to spawn, choosing a unique room for each
         for (int i = 0; i < m_chickensToSpawn; i++)
@@ -47,12 +47,19 @@ public class ChickenSpawner : MonoBehaviour
             // If we run out of rooms before we run out of chickens, we just reset the rooms and keep going
             if (spawnCols.Count == 0)
             {
-                spawnCols = m_spawnCollections;
+                spawnCols = new List<Transform>(m_spawnCollections);
             }
 
             int collectionIndex = Random.Range(0, spawnCols.Count);
             int collectionID = spawnCols[collectionIndex].GetInstanceID();
             spawnCols.RemoveAt(collectionIndex);
+
+			if (m_spawnPointDict[collectionID].Count == 0)
+			{
+				m_spawnCollections.RemoveAt(collectionIndex);
+				i--;
+				continue;
+			}
 
             int spawnPointIndex = Random.Range(0, m_spawnPointDict[collectionID].Count);
 
